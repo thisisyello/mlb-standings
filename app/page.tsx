@@ -1,22 +1,12 @@
-import { Division, DIVISION_NAMES } from "@/type";
+import { Division } from "@/type";
+import StandingTable from "./components/StandingTable";
 
 export default async function Home() {
   const response = await fetch("https://statsapi.mlb.com/api/v1/standings?leagueId=103,104&season=2024&standingsType=regularSeason");
   const data = await response.json();
-  const records: Division[] = await data.records;
+  const records: Division[] = data.records;
 
   return (
-    <div className="">
-      {
-        records.map(item => (
-          <div key={item.division.id}>
-            <h2>{DIVISION_NAMES[item.division.id]}</h2>
-            {item.teamRecords.map(itemRec => (
-              <p key={itemRec.team.id}>{itemRec.team.name}</p>
-            ))}
-          </div>
-        ))
-      }
-    </div>
+    <StandingTable records={records}/>
   );
 }
